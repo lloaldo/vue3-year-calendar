@@ -38,7 +38,7 @@ const changeYear = (idx) => {
 };
 const toggleDate = (dateObj) => {
     const activeDate = dayjs()
-        .set('year', props.value)
+        .set('year', Number(props.value))
         .set('month', dateObj.month - 1)
         .set('date', dateObj.date)
         .format('YYYY-MM-DD');
@@ -62,7 +62,7 @@ const toggleDate = (dateObj) => {
 };
 const overDay = (dateObj) => {
     const activeDate = dayjs()
-        .set('year', props.value)
+        .set('year', Number(props.value))
         .set('month', dateObj.month - 1)
         .set('date', dateObj.date)
         .format('YYYY-MM-DD');

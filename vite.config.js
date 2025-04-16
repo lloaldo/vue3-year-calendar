@@ -21,17 +21,18 @@ export default defineConfig({
             fileName: 'vue3-year-calendar',
         },
         rollupOptions: {
-            external: ['vue', 'dayjs', 'primevue', 'primeicons', '@primeuix/themes'],
+            external: ['vue', 'dayjs'],
             output: {
                 globals: {
                     vue: 'Vue',
                     dayjs: 'dayjs',
-                    primevue: 'PrimeVue',
-                    primeicons: 'PrimeIcons',
-                    '@primeuix/themes': 'PrimeUIXThemes',
                 },
             },
         },
+        sourcemap: false,
+    },
+    css: {
+        devSourcemap: false, // Evita .map en desarrollo
     },
 });
 //# sourceMappingURL=vite.config.js.map

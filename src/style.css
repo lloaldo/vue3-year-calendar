@@ -1,79 +1,173 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Estilos de YearCalendar.vue */
+.vue-calendar__container {
+  border-radius: 2px;
+  min-width: 0;
+  position: relative;
+  text-decoration: none;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  background-color: #f6f6f3;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.vue-calendar__container .container__year {
+  user-select: none;
+  height: 65px;
+  background-color: #fff;
+  font-size: 24px;
+  flex: 100%;
   text-align: center;
+  display: flex;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.vue-calendar__container .container__year .year__chooser {
+  height: 100%;
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.vue-calendar__container .container__year .year__chooser:hover {
+  background-color: rgba(102, 102, 102, 0.1);
+}
+
+.vue-calendar__container .container__year .year__chooser:nth-child(4n-3) {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.vue-calendar__container .container__year .year__chooser:nth-child(2n) {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.vue-calendar__container .container__year .year__chooser:nth-child(3) {
+  box-shadow: inset 0px -3px #4792bd;
+}
+
+.vue-calendar__container .container__months {
+  flex-wrap: wrap;
+  display: flex;
+  padding: 15px;
+}
+
+.vue-calendar__container .container__month {
+  padding: 8px;
+  flex: 16.66%;
+}
+
+@media (max-width: 1300px) {
+  .vue-calendar__container .container__month {
+    flex: 25%;
   }
-  a:hover {
-    color: #747bff;
+}
+
+@media (max-width: 992px) {
+  .vue-calendar__container .container__month {
+    flex: 33.3%;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .vue-calendar__container .container__month {
+    flex: 50%;
   }
+}
+
+@media (max-width: 450px) {
+  .vue-calendar__container .container__month {
+    flex: 100%;
+  }
+}
+
+.vue-calendar__container .p-0 {
+  padding: 0;
+}
+
+/* Estilos de MonthCalendar.vue */
+.month_calendar_container {
+  user-select: none;
+  position: relative;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.month__title {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.9);
+  text-transform: capitalize;
+  margin-bottom: 8px;
+}
+
+.month__week-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.week__day {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.month__days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.9);
+  position: relative;
+}
+
+.day--disabled {
+  cursor: default;
+  background: transparent !important;
+}
+
+.day--active {
+  background: rgba(255, 186, 186, 0.5);
+}
+
+.day--today {
+  font-weight: 600;
+  color: #4792bd;
+}
+
+.day.red {
+  background-color: #a00 !important;
+  color: #fff !important;
+}
+
+.day.blue {
+  background-color: #0000aa !important;
+  color: #fff !important;
+}
+
+.day.your_customized_classname {
+  background-color: #ff0 !important;
+  color: #000 !important;
+}
+
+.day__icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
 }

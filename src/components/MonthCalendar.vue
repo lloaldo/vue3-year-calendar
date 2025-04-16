@@ -218,9 +218,9 @@ watch([() => props.year, () => props.month, () => props.activeDates], () => {
 });
 
 // Verificar activeDates
-watch(() => props.activeDates, (newDates) => {
-  console.log('MonthCalendar activeDates:', newDates);
-}, { deep: true });
+// watch(() => props.activeDates, (newDates) => {
+//   console.log('MonthCalendar activeDates:', newDates);
+// }, { deep: true });
 
 // Inicializar
 initCalendar();

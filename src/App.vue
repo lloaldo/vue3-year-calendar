@@ -40,10 +40,15 @@ import { ref } from 'vue';
 import dayjs from 'dayjs';
 import YearCalendar from './components/YearCalendar.vue';
 
+interface ActiveDate {
+  date: string;
+  className?: string;
+}
+
 // Estado reactivo
 const lang = ref('es');
 const year = ref(2025);
-const activeDates = ref([
+const activeDates = ref<ActiveDate[]>([
   { date: '2025-02-13' },
   { date: '2025-02-14', className: 'red' },
   { date: '2025-02-15', className: 'blue' },
@@ -55,19 +60,19 @@ const showYearSelector = ref(true);
 // Métodos
 const toggleDate = (dateInfo: { date: string; selected: boolean; className?: string }) => {
   const newDates = [...activeDates.value];
-  const dateIndex = newDates.findIndex((d) => (typeof d === 'string' ? d : d.date) === dateInfo.date);
+  const dateIndex = newDates.findIndex((d) => d.date === dateInfo.date);
 
   if (dateInfo.selected && dateIndex === -1) {
-    const newDate = activeClass.value
-      ? { date: dateInfo.date, className: activeClass.value }
-      : dateInfo.date;
+    const newDate: ActiveDate = {
+      date: dateInfo.date,
+      className: activeClass.value || undefined,
+    };
     newDates.push(newDate);
   } else if (!dateInfo.selected && dateIndex !== -1) {
     newDates.splice(dateIndex, 1);
   }
 
-  // Forzar reactividad
-  activeDates.value = newDates.slice();
+  activeDates.value = newDates;
   console.log('Toggled date:', dateInfo, 'New activeDates:', activeDates.value);
 };
 
@@ -78,16 +83,19 @@ const addSatAndSunOfYear = () => {
   while (theDate.diff(theDate.endOf('year'), 'day') !== 0) {
     if (theDate.day() === 6 || theDate.day() === 0) {
       const dateStr = theDate.format('YYYY-MM-DD');
-      if (!newDates.some((d) => (typeof d === 'string' ? d : d.date) === dateStr)) {
-        newDates.push(dateStr);
+      if (!newDates.some((d) => d.date === dateStr)) {
+        newDates.push({
+          date: dateStr,
+          className: activeClass.value || undefined,
+        });
       }
     }
     theDate = theDate.add(1, 'day');
   }
 
   activeDates.value = newDates
-    .filter((item, pos, self) => self.findIndex((d) => (typeof d === 'string' ? d : d.date) === (typeof item === 'string' ? item : item.date)) === pos)
-    .sort((a, b) => (typeof a === 'string' ? a : a.date).localeCompare(typeof b === 'string' ? b : b.date));
+    .filter((item, pos, self) => self.findIndex((d) => d.date === item.date) === pos)
+    .sort((a, b) => a.date.localeCompare(b.date));
 };
 
 const removeSatAndSunOfYear = () => {

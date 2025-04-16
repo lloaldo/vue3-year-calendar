@@ -1,4 +1,4 @@
-// export { default as MiComponente } from './components/MiComponente.vue';
-export { default as YearCalendar } from './components/YearCalendar.vue';
-// export { default as MonthCalendar } from './components/MonthCalendar.vue';
+import YearCalendar from './components/YearCalendar.vue';
+import './style.css';
+export { YearCalendar };
 //# sourceMappingURL=index.js.map
