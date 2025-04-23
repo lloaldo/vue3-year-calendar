@@ -7,7 +7,7 @@ const props = withDefaults(defineProps(), {
     value: () => dayjs().year(),
     lang: 'en',
     activeClass: '',
-    prefixClass: 'calendar--active',
+    prefixClass: 'yc-calendar--active',
 });
 const emit = defineEmits();
 // Estado reactivo
@@ -37,52 +37,32 @@ const changeYear = (idx) => {
     activeYear.value = idx + activeYear.value - 3;
 };
 const toggleDate = (dateObj) => {
-    const activeDate = dayjs()
-        .set('year', Number(props.value))
-        .set('month', dateObj.month - 1)
-        .set('date', dateObj.date)
-        .format('YYYY-MM-DD');
     emit('toggleDate', {
-        date: activeDate,
+        date: dateObj.date,
         selected: dateObj.selected,
         className: dateObj.className,
     });
     const newDates = [...props.activeDates];
     const dateEntry = isUsingString.value
-        ? activeDate
-        : { date: activeDate, className: dateObj.className };
-    const dateIndex = newDates.findIndex((i) => (typeof i === 'string' ? i : i.date) === activeDate);
-    if (dateIndex === -1) {
+        ? dateObj.date
+        : { date: dateObj.date, className: dateObj.className };
+    const dateIndex = newDates.findIndex((i) => (typeof i === 'string' ? i : i.date) === dateObj.date);
+    if (dateObj.selected && dateIndex === -1) {
         newDates.push(dateEntry);
     }
-    else {
+    else if (!dateObj.selected && dateIndex !== -1) {
         newDates.splice(dateIndex, 1);
     }
     emit('update:activeDates', newDates);
 };
 const overDay = (dateObj) => {
-    const activeDate = dayjs()
-        .set('year', Number(props.value))
-        .set('month', dateObj.month - 1)
-        .set('date', dateObj.date)
-        .format('YYYY-MM-DD');
     emit('overDay', {
-        date: activeDate,
+        date: dateObj.date,
         selected: dateObj.selected,
         className: dateObj.className,
     });
 };
-const modifiedActiveDates = (dateIndex, activeDate) => {
-    const newDates = [...props.activeDates];
-    if (dateIndex === -1) {
-        newDates.push(activeDate);
-    }
-    else {
-        newDates.splice(dateIndex, 1);
-    }
-    return newDates;
-};
-// Validación de activeDates (simplificada, puedes reutilizar la lógica original si es necesaria)
+// Validación de activeDates
 const validateActiveDates = (dates) => {
     return dates.every((date) => {
         const curDate = typeof date === 'string' ? date : date.date;
@@ -95,7 +75,7 @@ const validateActiveDates = (dates) => {
         return day > 0 && day <= monthLength[month - 1];
     });
 };
-// Ejecutar validación al inicio (opcional)
+// Ejecutar validación al inicio
 if (props.activeDates.length && !validateActiveDates(props.activeDates)) {
     console.warn('Invalid activeDates provided');
 }
@@ -106,45 +86,19 @@ const __VLS_withDefaultsArg = (function (t) { return t; })({
     value: () => dayjs().year(),
     lang: 'en',
     activeClass: '',
-    prefixClass: 'calendar--active',
+    prefixClass: 'yc-calendar--active',
 });
 const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['year__chooser']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['year__chooser']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['year__chooser']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['year__chooser']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
 // CSS variable injection 
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "vue-calendar__container" },
+    ...{ class: "yc-container" },
 });
 if (__VLS_ctx.showYearSelector) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "container__year" },
+        ...{ class: "yc-year" },
     });
     for (const [i] of __VLS_getVForSourceType((5))) {
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
@@ -154,13 +108,13 @@ if (__VLS_ctx.showYearSelector) {
                     __VLS_ctx.changeYear(i);
                 } },
             key: (i),
-            ...{ class: "year__chooser" },
+            ...{ class: "yc-year-chooser" },
         });
         (i + __VLS_ctx.activeYear - 3);
     }
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "container__months" },
+    ...{ class: "yc-months" },
 });
 for (const [n] of __VLS_getVForSourceType((12))) {
     /** @type {[typeof MonthCalendar, ]} */ ;
@@ -168,7 +122,7 @@ for (const [n] of __VLS_getVForSourceType((12))) {
     const __VLS_0 = __VLS_asFunctionalComponent(MonthCalendar, new MonthCalendar({
         ...{ 'onToggleDate': {} },
         ...{ 'onOverDay': {} },
-        ...{ class: "container__month" },
+        ...{ class: "yc-month" },
         key: (`month-${n}`),
         year: (__VLS_ctx.activeYear),
         month: (n),
@@ -180,7 +134,7 @@ for (const [n] of __VLS_getVForSourceType((12))) {
     const __VLS_1 = __VLS_0({
         ...{ 'onToggleDate': {} },
         ...{ 'onOverDay': {} },
-        ...{ class: "container__month" },
+        ...{ class: "yc-month" },
         key: (`month-${n}`),
         year: (__VLS_ctx.activeYear),
         month: (n),
@@ -203,16 +157,16 @@ for (const [n] of __VLS_getVForSourceType((12))) {
 for (const [i] of __VLS_getVForSourceType((5))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div)({
         key: (`empty-${i}`),
-        ...{ class: "container__month p-0" },
+        ...{ class: "yc-month yc-empty" },
     });
 }
-/** @type {__VLS_StyleScopedClasses['vue-calendar__container']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__year']} */ ;
-/** @type {__VLS_StyleScopedClasses['year__chooser']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__months']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['container__month']} */ ;
-/** @type {__VLS_StyleScopedClasses['p-0']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-container']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-year']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-year-chooser']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-months']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-month']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-month']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-empty']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

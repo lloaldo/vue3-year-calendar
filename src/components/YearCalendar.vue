@@ -1,19 +1,19 @@
-<!-- src/components/YearCalendar.vue -->
+<!-- vue3-year-calendar/src/components/YearCalendar.vue -->
 <template>
-  <div class="vue-calendar__container">
-    <div v-if="showYearSelector" class="container__year">
+  <div class="yc-container">
+    <div v-if="showYearSelector" class="yc-year">
       <span
         v-for="i in 5"
         :key="i"
-        class="year__chooser"
+        class="yc-year-chooser"
         @click="changeYear(i)"
       >
         {{ i + activeYear - 3 }}
       </span>
     </div>
-    <div class="container__months">
+    <div class="yc-months">
       <month-calendar
-        class="container__month"
+        class="yc-month"
         v-for="n in 12"
         :key="`month-${n}`"
         :year="activeYear"
@@ -25,7 +25,7 @@
         @toggle-date="toggleDate"
         @over-day="overDay"
       />
-      <div v-for="i in 5" :key="`empty-${i}`" class="container__month p-0" />
+      <div v-for="i in 5" :key="`empty-${i}`" class="yc-month yc-empty" />
     </div>
   </div>
 </template>
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => dayjs().year(),
   lang: 'en',
   activeClass: '',
-  prefixClass: 'calendar--active',
+  prefixClass: 'yc-calendar--active',
 });
 
 // Emits
@@ -97,58 +97,37 @@ const changeYear = (idx: number) => {
   activeYear.value = idx + activeYear.value - 3;
 };
 
-const toggleDate = (dateObj: { date: number; month: number; selected: boolean; className?: string }) => {
-  const activeDate = dayjs()
-    .set('year', props.value)
-    .set('month', dateObj.month - 1)
-    .set('date', dateObj.date)
-    .format('YYYY-MM-DD');
-
+const toggleDate = (dateObj: { date: string; selected: boolean; className: string }) => {
   emit('toggleDate', {
-    date: activeDate,
+    date: dateObj.date,
     selected: dateObj.selected,
     className: dateObj.className,
   });
 
   const newDates = [...props.activeDates];
   const dateEntry = isUsingString.value
-    ? activeDate
-    : { date: activeDate, className: dateObj.className };
-  const dateIndex = newDates.findIndex((i) => (typeof i === 'string' ? i : i.date) === activeDate);
+    ? dateObj.date
+    : { date: dateObj.date, className: dateObj.className };
+  const dateIndex = newDates.findIndex((i) => (typeof i === 'string' ? i : i.date) === dateObj.date);
 
-  if (dateIndex === -1) {
+  if (dateObj.selected && dateIndex === -1) {
     newDates.push(dateEntry);
-  } else {
+  } else if (!dateObj.selected && dateIndex !== -1) {
     newDates.splice(dateIndex, 1);
   }
 
   emit('update:activeDates', newDates);
 };
 
-const overDay = (dateObj: { date: number; month: number; selected: boolean; className?: string }) => {
-  const activeDate = dayjs()
-    .set('year', props.value)
-    .set('month', dateObj.month - 1)
-    .set('date', dateObj.date)
-    .format('YYYY-MM-DD');
+const overDay = (dateObj: { date: string; selected: boolean; className: string }) => {
   emit('overDay', {
-    date: activeDate,
+    date: dateObj.date,
     selected: dateObj.selected,
     className: dateObj.className,
   });
 };
 
-const modifiedActiveDates = (dateIndex: number, activeDate: string | ActiveDate) => {
-  const newDates = [...props.activeDates];
-  if (dateIndex === -1) {
-    newDates.push(activeDate);
-  } else {
-    newDates.splice(dateIndex, 1);
-  }
-  return newDates;
-};
-
-// Validación de activeDates (simplificada, puedes reutilizar la lógica original si es necesaria)
+// Validación de activeDates
 const validateActiveDates = (dates: (string | ActiveDate)[]) => {
   return dates.every((date) => {
     const curDate = typeof date === 'string' ? date : date.date;
@@ -160,97 +139,12 @@ const validateActiveDates = (dates: (string | ActiveDate)[]) => {
   });
 };
 
-// Ejecutar validación al inicio (opcional)
+// Ejecutar validación al inicio
 if (props.activeDates.length && !validateActiveDates(props.activeDates)) {
   console.warn('Invalid activeDates provided');
 }
 </script>
 
-<!-- src/components/YearCalendar.vue -->
-<!-- ... Template y Script sin cambios ... -->
-
 <style lang="css" scoped>
-.vue-calendar__container {
-  border-radius: 2px;
-  min-width: 0;
-  position: relative;
-  text-decoration: none;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-  background-color: #f6f6f3;
-}
-
-.vue-calendar__container .container__year {
-  user-select: none;
-  height: 65px;
-  background-color: #fff;
-  font-size: 24px;
-  flex: 100%;
-  text-align: center;
-  display: flex;
-}
-
-.vue-calendar__container .container__year .year__chooser {
-  height: 100%;
-  flex: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(0, 0, 0, 0.9);
-}
-
-.vue-calendar__container .container__year .year__chooser:hover {
-  background-color: rgba(102, 102, 102, 0.1);
-}
-
-.vue-calendar__container .container__year .year__chooser:nth-child(4n-3) {
-  color: rgba(0, 0, 0, 0.3);
-}
-
-.vue-calendar__container .container__year .year__chooser:nth-child(2n) {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.vue-calendar__container .container__year .year__chooser:nth-child(3) {
-  box-shadow: inset 0px -3px #4792bd;
-}
-
-.vue-calendar__container .container__months {
-  flex-wrap: wrap;
-  display: flex;
-  padding: 15px;
-}
-
-.vue-calendar__container .container__month {
-  padding: 8px;
-  flex: 16.66%;
-}
-
-@media (max-width: 1300px) {
-  .vue-calendar__container .container__month {
-    flex: 25%;
-  }
-}
-
-@media (max-width: 992px) {
-  .vue-calendar__container .container__month {
-    flex: 33.3%;
-  }
-}
-
-@media (max-width: 768px) {
-  .vue-calendar__container .container__month {
-    flex: 50%;
-  }
-}
-
-@media (max-width: 450px) {
-  .vue-calendar__container .container__month {
-    flex: 100%;
-  }
-}
-
-.vue-calendar__container .p-0 {
-  padding: 0;
-}
+/* Los estilos se mueven a dist/vue3-year-calendar.css */
 </style>

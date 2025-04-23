@@ -19,7 +19,7 @@ const toggleDate = (dateInfo) => {
     if (dateInfo.selected && dateIndex === -1) {
         const newDate = {
             date: dateInfo.date,
-            className: activeClass.value || undefined,
+            className: dateInfo.className || activeClass.value || undefined,
         };
         newDates.push(newDate);
     }
@@ -27,7 +27,6 @@ const toggleDate = (dateInfo) => {
         newDates.splice(dateIndex, 1);
     }
     activeDates.value = newDates;
-    // console.log('Toggled date:', dateInfo, 'New activeDates:', activeDates.value);
 };
 const addSatAndSunOfYear = () => {
     let theDate = dayjs(`${year.value}-01-01`);

@@ -1,173 +1,182 @@
-/* Estilos de YearCalendar.vue */
-.vue-calendar__container {
+/* vue3-year-calendar/src/style.css */
+
+/* Contenedor principal del calendario */
+.yc-container {
   border-radius: 2px;
   min-width: 0;
-  position: relative;
-  text-decoration: none;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   background-color: #f6f6f3;
 }
 
-.vue-calendar__container .container__year {
+/* Selector de años */
+.yc-year {
   user-select: none;
   height: 65px;
   background-color: #fff;
   font-size: 24px;
-  flex: 100%;
-  text-align: center;
   display: flex;
+  justify-content: center;
 }
 
-.vue-calendar__container .container__year .year__chooser {
-  height: 100%;
+.yc-year-chooser {
   flex: 1;
-  cursor: pointer;
+  max-width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   color: rgba(0, 0, 0, 0.9);
 }
 
-.vue-calendar__container .container__year .year__chooser:hover {
+.yc-year-chooser:hover {
   background-color: rgba(102, 102, 102, 0.1);
 }
 
-.vue-calendar__container .container__year .year__chooser:nth-child(4n-3) {
+.yc-year-chooser:nth-child(4n-3) {
   color: rgba(0, 0, 0, 0.3);
 }
 
-.vue-calendar__container .container__year .year__chooser:nth-child(2n) {
+.yc-year-chooser:nth-child(2n) {
   color: rgba(0, 0, 0, 0.6);
 }
 
-.vue-calendar__container .container__year .year__chooser:nth-child(3) {
+.yc-year-chooser:nth-child(3) {
   box-shadow: inset 0px -3px #4792bd;
 }
 
-.vue-calendar__container .container__months {
-  flex-wrap: wrap;
+/* Contenedor de meses */
+.yc-months {
   display: flex;
+  flex-wrap: wrap;
   padding: 15px;
 }
 
-.vue-calendar__container .container__month {
+.yc-month {
   padding: 8px;
   flex: 16.66%;
 }
 
+.yc-empty {
+  padding: 0;
+}
+
+/* Media queries para responsividad */
 @media (max-width: 1300px) {
-  .vue-calendar__container .container__month {
+  .yc-month {
     flex: 25%;
   }
 }
 
 @media (max-width: 992px) {
-  .vue-calendar__container .container__month {
+  .yc-month {
     flex: 33.3%;
   }
 }
 
 @media (max-width: 768px) {
-  .vue-calendar__container .container__month {
+  .yc-month {
     flex: 50%;
   }
 }
 
 @media (max-width: 450px) {
-  .vue-calendar__container .container__month {
+  .yc-month {
     flex: 100%;
   }
 }
 
-.vue-calendar__container .p-0 {
-  padding: 0;
-}
-
-/* Estilos de MonthCalendar.vue */
-.month_calendar_container {
-  user-select: none;
-  position: relative;
-  background-color: #fff;
-  border-radius: 2px;
+/* Estilos del calendario mensual */
+.yc-wrapper {
   padding: 10px;
 }
 
-.month__title {
-  font-size: 14px;
-  font-weight: 600;
+.yc-calendar {
+  background-color: #fff;
+  min-height: 295px;
   text-align: center;
-  color: rgba(0, 0, 0, 0.9);
-  text-transform: capitalize;
-  margin-bottom: 8px;
+  color: rgba(53, 60, 70, 0.8);
+  border-radius: 2px;
+  min-width: 0;
 }
 
-.month__week-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.week__day {
-  width: 30px;
-  height: 30px;
+.yc-calendar__title {
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(196, 196, 196, 0.3);
+  font-size: 18px;
+  height: 50px;
+  margin-bottom: 12px;
 }
 
-.month__days {
+.yc-calendar__body {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  padding: 0 20px;
+  min-width: 194px;
 }
 
-.day {
-  width: 30px;
-  height: 30px;
+.yc-calendar__day {
+  flex: 14.28%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 12px;
+  align-items: center;
+  font-size: 16px;
+  height: 31px;
+  color: #5db3d4;
+}
+
+.yc-day__weektitle {
+  color: rgba(53, 60, 70, 0.8);
+}
+
+.yc-day {
+  font-size: 14px;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.9);
+  user-select: none;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
+  border-radius: 5px;
 }
 
-.day--disabled {
-  cursor: default;
-  background: transparent !important;
+/* Estilos para días activos */
+.yc-day.your_customized_wrapper_class {
+  background-color: #0aa; /* Cyan */
+  color: white;
 }
 
-.day--active {
-  background: rgba(255, 186, 186, 0.5);
+.yc-day.your_customized_wrapper_class.red {
+  background-color: #a00; /* Rojo */
+  color: white;
 }
 
-.day--today {
-  font-weight: 600;
-  color: #4792bd;
+.yc-day.your_customized_wrapper_class.blue {
+  background-color: #007daa; /* Azul */
+  color: white;
 }
 
-.day.red {
-  background-color: #a00 !important;
-  color: #fff !important;
+.yc-day.your_customized_wrapper_class.your_customized_classname {
+  background-color: yellow; /* Amarillo */
+  color: black;
 }
 
-.day.blue {
-  background-color: #0000aa !important;
-  color: #fff !important;
+.yc-day.your_customized_wrapper_class.custom-day {
+  background-color: #ff0; /* Amarillo brillante */
+  color: black;
 }
 
-.day.your_customized_classname {
-  background-color: #ff0 !important;
-  color: #000 !important;
+.yc-day:not(.your_customized_wrapper_class):hover {
+  background-color: rgba(102, 102, 102, 0.1);
+  border-radius: 5px;
 }
 
-.day__icon {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 12px;
-  height: 12px;
+.yc-calendar__day--otherMonth {
+  color: #eaeaea;
+  cursor: auto;
 }

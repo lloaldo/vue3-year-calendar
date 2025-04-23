@@ -1,17 +1,17 @@
-<!-- src/components/MonthCalendar.vue -->
+<!-- vue3-year-calendar/src/components/MonthCalendar.vue -->
 <template>
-  <div class="c-wrapper" :style="cssVars">
+  <div class="yc-wrapper">
     <div
-      class="calendar"
+      class="yc-calendar"
       @mouseup="mouseUp"
       @mouseleave.stop="mouseUp"
     >
-      <div class="calendar__title">{{ monthTitle }}</div>
-      <div class="calendar__body">
+      <div class="yc-calendar__title">{{ monthTitle }}</div>
+      <div class="yc-calendar__body">
         <div
           v-for="day in 7"
           :key="`title${day}`"
-          class="calendar__day day__weektitle"
+          class="yc-calendar__day yc-day__weektitle"
           :style="{ fontSize: weekTitleFontSizeAdjustLang }"
         >
           {{ showDayTitle(day) }}
@@ -19,10 +19,10 @@
         <div
           v-for="(dayObj, key) in showDays"
           :key="`day${key}`"
-          class="calendar__day"
+          class="yc-calendar__day"
         >
           <div
-            class="day"
+            class="yc-day"
             :class="classList(dayObj)"
             @mouseover="dragDay(dayObj)"
             @mousedown="mouseDown(dayObj)"
@@ -38,9 +38,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import dayjs from 'dayjs';
-import RemoveCircleIcon from '../assets/baseline-remove_circle-24px.svg';
-import RecordItIcon from '../assets/RecordIt.svg';
-import WarningIcon from '../assets/round-warning-24px.svg';
 
 // Definición de tipos
 interface ActiveDate {
@@ -69,25 +66,19 @@ const props = withDefaults(defineProps<Props>(), {
   month: () => dayjs().month() + 1,
   year: () => dayjs().year(),
   lang: 'en',
-  activeClass: '',
-  prefixClass: 'calendar--active',
+  activeClass: 'red',
+  prefixClass: 'yc-calendar--active',
 });
 
 // Emits
 const emit = defineEmits<{
-  (e: 'toggleDate', value: { month: number; date: number; selected: boolean; className: string }): void;
-  (e: 'overDay', value: { month: number; date: number; selected: boolean; className: string }): void;
+  (e: 'toggleDate', value: { date: string; selected: boolean; className: string }): void;
+  (e: 'overDay', value: { date: string; selected: boolean; className: string }): void;
 }>();
 
 // Estado reactivo
 const showDays = ref<DayObj[]>([]);
 const isMouseDown = ref(false);
-
-const cssVars = computed(() => ({
-  '--remove-circle-icon': `url(${RemoveCircleIcon})`,
-  '--record-it-icon': `url(${RecordItIcon})`,
-  '--warning-icon': `url(${WarningIcon})`,
-}));
 
 // Computadas
 const weekTitleFontSizeAdjustLang = computed(() => {
@@ -141,6 +132,7 @@ const initCalendar = () => {
     };
   });
 
+  const validClasses = ['red', 'blue', 'your_customized_classname', 'custom-day'];
   props.activeDates.forEach((date) => {
     const oDate: ActiveDate =
       typeof date === 'string' ? { date, className: props.activeClass } : date;
@@ -152,7 +144,8 @@ const initCalendar = () => {
     const activeArrayKey = ((activeDate - 1) % 7) + firstDay + 7 * row;
     if (fullCol[activeArrayKey]) {
       fullCol[activeArrayKey].active = true;
-      fullCol[activeArrayKey].className = oDate.className || props.activeClass || '';
+      const className = oDate.className || props.activeClass || 'red';
+      fullCol[activeArrayKey].className = validClasses.includes(className) ? className : 'red';
     }
   });
 
@@ -172,22 +165,31 @@ const showDayTitle = (day: number) => {
 
 const toggleDay = (dayObj: DayObj) => {
   if (dayObj.isOtherMonth || !dayObj.value) return;
+  const date = dayjs()
+    .set('year', Number(props.year))
+    .set('month', Number(props.month) - 1)
+    .set('date', Number(dayObj.value))
+    .format('YYYY-MM-DD');
+  console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
   emit('toggleDate', {
-    month: Number(props.month),
-    date: Number(dayObj.value),
+    date,
     selected: !dayObj.active,
-    className: props.activeClass,
+    className: props.activeClass || 'red',
   });
 };
 
 const dragDay = (dayObj: DayObj) => {
   if (isMouseDown.value) toggleDay(dayObj);
   if (dayObj.isOtherMonth || !dayObj.value) return;
+  const date = dayjs()
+    .set('year', Number(props.year))
+    .set('month', Number(props.month) - 1)
+    .set('date', Number(dayObj.value))
+    .format('YYYY-MM-DD');
   emit('overDay', {
-    month: Number(props.month),
-    date: Number(dayObj.value),
+    date,
     selected: !dayObj.active,
-    className: props.activeClass,
+    className: props.activeClass || 'red',
   });
 };
 
@@ -202,13 +204,13 @@ const mouseUp = () => {
 
 const classList = (dayObj: DayObj) => {
   const classes: Record<string, boolean> = {
-    'calendar__day--otherMonth': dayObj.isOtherMonth,
-    [props.prefixClass]: dayObj.active, // Usa prefixClass (por ejemplo, 'your_customized_wrapper_class')
+    'yc-calendar__day--otherMonth': dayObj.isOtherMonth,
+    [props.prefixClass]: dayObj.active,
   };
   if (dayObj.active && dayObj.className) {
-    classes[dayObj.className] = true; // Aplica red, blue, etc.
+    classes[dayObj.className] = true;
   }
-  // console.log('Day classes:', dayObj, classes); // Depuración
+  console.log('Day classes:', classes);
   return classes;
 };
 
@@ -217,163 +219,9 @@ watch([() => props.year, () => props.month, () => props.activeDates], () => {
   initCalendar();
 });
 
-// Verificar activeDates
-// watch(() => props.activeDates, (newDates) => {
-//   console.log('MonthCalendar activeDates:', newDates);
-// }, { deep: true });
-
 // Inicializar
 initCalendar();
 </script>
-
 <style lang="css" scoped>
-.c-wrapper {
-  padding: 10px;
-}
-
-.calendar {
-  background-color: #fff;
-  min-height: 295px;
-  text-align: center;
-  color: rgba(53, 60, 70, 0.8);
-  border-radius: 2px;
-  min-width: 0;
-  position: relative;
-  text-decoration: none;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-  transition: transform 0.3s ease;
-}
-
-.calendar:hover {
-  z-index: 2;
-}
-
-@media (min-width: 1024px) {
-  .calendar:hover {
-    transform: scale(1.15);
-    box-shadow: 0 7px 21px 0 rgba(0, 0, 0, 0.1);
-  }
-}
-
-.calendar .calendar__title {
-  font-weight: bold;
-  flex: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(196, 196, 196, 0.3);
-  font-size: 18px;
-  height: 50px;
-  margin-bottom: 12px;
-}
-
-.calendar .calendar__body {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-  padding: 0 20px;
-  min-width: 194px;
-}
-
-.calendar .calendar__day {
-  flex: 14.28%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  height: 31px;
-  color: #5db3d4;
-}
-
-.calendar .day__weektitle {
-  color: rgba(53, 60, 70, 0.8);
-}
-
-.calendar .day {
-  font-size: 14px;
-  cursor: pointer;
-  user-select: none;
-  width: 22px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border-radius: 5px;
-}
-
-.calendar .day::after {
-  content: '';
-  display: block;
-  height: 10px;
-  width: 10px;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  border-radius: 50%;
-  z-index: 1;
-  background-color: transparent;
-}
-
-.calendar .day.your_customized_wrapper_class {
-  background-color: rgba(255, 186, 186, 0.5);
-  color: #bcbcbc;
-}
-
-.calendar .day.your_customized_wrapper_class::after {
-  background-image: var(--remove-circle-icon);
-  background-size: 100% 100%;
-}
-
-.calendar .day.your_customized_wrapper_class.red {
-  background-color: #a00;
-  color: white;
-}
-
-.calendar .day.your_customized_wrapper_class.red::after {
-  background-image: var(--remove-circle-icon);
-  background-size: 100% 100%;
-}
-
-.calendar .day.your_customized_wrapper_class.blue {
-  background-color: #0000aa;
-  color: white;
-}
-
-.calendar .day.your_customized_wrapper_class.blue::after {
-  background-image: var(--remove-circle-icon);
-  background-size: 100% 100%;
-}
-
-.calendar .day.your_customized_wrapper_class.your_customized_classname {
-  background-color: yellow;
-  color: black;
-}
-
-.calendar .day.your_customized_wrapper_class.your_customized_classname::after {
-  background-image: var(--remove-circle-icon);
-  background-size: 100% 100%;
-}
-
-.calendar .day.your_customized_wrapper_class.info::after {
-  background-image: var(--record-it-icon);
-  background-size: 100% 100%;
-}
-
-.calendar .day.your_customized_wrapper_class.warning::after {
-  background-image: var(--warning-icon);
-  background-color: rgba(234, 234, 234, 0.3);
-  background-size: 100% 100%;
-}
-
-.calendar .day:not(.your_customized_wrapper_class):hover {
-  background-color: rgba(102, 102, 102, 0.1);
-  border-radius: 5px;
-}
-
-.calendar .calendar__day--otherMonth {
-  color: #eaeaea;
-  cursor: auto;
-}
+/* Los estilos se mueven a dist/vue3-year-calendar.css */
 </style>

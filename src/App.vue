@@ -1,4 +1,4 @@
-<!-- src/App.vue -->
+<!-- vue3-year-calendar/src/App.vue -->
 <template>
   <div id="app">
     <button @click="addSatAndSunOfYear">Add weekend</button>
@@ -65,7 +65,7 @@ const toggleDate = (dateInfo: { date: string; selected: boolean; className?: str
   if (dateInfo.selected && dateIndex === -1) {
     const newDate: ActiveDate = {
       date: dateInfo.date,
-      className: activeClass.value || undefined,
+      className: dateInfo.className || activeClass.value || undefined,
     };
     newDates.push(newDate);
   } else if (!dateInfo.selected && dateIndex !== -1) {
@@ -73,7 +73,6 @@ const toggleDate = (dateInfo: { date: string; selected: boolean; className?: str
   }
 
   activeDates.value = newDates;
-  console.log('Toggled date:', dateInfo, 'New activeDates:', activeDates.value);
 };
 
 const addSatAndSunOfYear = () => {
@@ -108,39 +107,8 @@ const removeSatAndSunOfYear = () => {
 </script>
 
 <style lang="css" scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 #app {
   padding: 60px;
   background-color: #eaeaea;
-}
-
-.your_customized_wrapper_class {
-  background-color: #0aa;
-  color: white;
-}
-
-.your_customized_wrapper_class.red {
-  background-color: #a00;
-  color: white;
-}
-
-.your_customized_wrapper_class.red::after {
-  background-image: url('/assets/baseline-remove_circle-24px.svg');
-  background-size: 100% 100%;
-}
-
-.your_customized_wrapper_class.blue {
-  background-color: #0000aa;
-  color: white;
-}
-
-.your_customized_wrapper_class.your_customized_classname {
-  background-color: yellow;
-  color: black;
 }
 </style>

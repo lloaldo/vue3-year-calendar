@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
+import path from 'path';
 
 export default defineConfig({
   server: {
@@ -15,6 +16,11 @@ export default defineConfig({
     vue(),
     dts({ insertTypesEntry: true }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
@@ -28,6 +34,7 @@ export default defineConfig({
           vue: 'Vue',
           dayjs: 'dayjs',
         },
+        assetFileNames: 'assets/[name].[ext]',
       },
     },
     sourcemap: false,

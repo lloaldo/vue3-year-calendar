@@ -1,25 +1,17 @@
 import { computed, ref, watch } from 'vue';
 import dayjs from 'dayjs';
-import RemoveCircleIcon from '../assets/baseline-remove_circle-24px.svg';
-import RecordItIcon from '../assets/RecordIt.svg';
-import WarningIcon from '../assets/round-warning-24px.svg';
 const props = withDefaults(defineProps(), {
     activeDates: () => [],
     month: () => dayjs().month() + 1,
     year: () => dayjs().year(),
     lang: 'en',
-    activeClass: '',
-    prefixClass: 'calendar--active',
+    activeClass: 'red',
+    prefixClass: 'yc-calendar--active',
 });
 const emit = defineEmits();
 // Estado reactivo
 const showDays = ref([]);
 const isMouseDown = ref(false);
-const cssVars = computed(() => ({
-    '--remove-circle-icon': `url(${RemoveCircleIcon})`,
-    '--record-it-icon': `url(${RecordItIcon})`,
-    '--warning-icon': `url(${WarningIcon})`,
-}));
 // Computadas
 const weekTitleFontSizeAdjustLang = computed(() => {
     const fontSizeMapping = {
@@ -67,6 +59,7 @@ const initCalendar = () => {
             className: '',
         };
     });
+    const validClasses = ['red', 'blue', 'your_customized_classname', 'custom-day'];
     props.activeDates.forEach((date) => {
         const oDate = typeof date === 'string' ? { date, className: props.activeClass } : date;
         const dayjsObj = dayjs(oDate.date);
@@ -77,7 +70,8 @@ const initCalendar = () => {
         const activeArrayKey = ((activeDate - 1) % 7) + firstDay + 7 * row;
         if (fullCol[activeArrayKey]) {
             fullCol[activeArrayKey].active = true;
-            fullCol[activeArrayKey].className = oDate.className || props.activeClass || '';
+            const className = oDate.className || props.activeClass || 'red';
+            fullCol[activeArrayKey].className = validClasses.includes(className) ? className : 'red';
         }
     });
     showDays.value = fullCol;
@@ -95,11 +89,16 @@ const showDayTitle = (day) => {
 const toggleDay = (dayObj) => {
     if (dayObj.isOtherMonth || !dayObj.value)
         return;
+    const date = dayjs()
+        .set('year', Number(props.year))
+        .set('month', Number(props.month) - 1)
+        .set('date', Number(dayObj.value))
+        .format('YYYY-MM-DD');
+    console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
     emit('toggleDate', {
-        month: Number(props.month),
-        date: Number(dayObj.value),
+        date,
         selected: !dayObj.active,
-        className: props.activeClass,
+        className: props.activeClass || 'red',
     });
 };
 const dragDay = (dayObj) => {
@@ -107,11 +106,15 @@ const dragDay = (dayObj) => {
         toggleDay(dayObj);
     if (dayObj.isOtherMonth || !dayObj.value)
         return;
+    const date = dayjs()
+        .set('year', Number(props.year))
+        .set('month', Number(props.month) - 1)
+        .set('date', Number(dayObj.value))
+        .format('YYYY-MM-DD');
     emit('overDay', {
-        month: Number(props.month),
-        date: Number(dayObj.value),
+        date,
         selected: !dayObj.active,
-        className: props.activeClass,
+        className: props.activeClass || 'red',
     });
 };
 const mouseDown = (dayObj) => {
@@ -123,23 +126,19 @@ const mouseUp = () => {
 };
 const classList = (dayObj) => {
     const classes = {
-        'calendar__day--otherMonth': dayObj.isOtherMonth,
-        [props.prefixClass]: dayObj.active, // Usa prefixClass (por ejemplo, 'your_customized_wrapper_class')
+        'yc-calendar__day--otherMonth': dayObj.isOtherMonth,
+        [props.prefixClass]: dayObj.active,
     };
     if (dayObj.active && dayObj.className) {
-        classes[dayObj.className] = true; // Aplica red, blue, etc.
+        classes[dayObj.className] = true;
     }
-    // console.log('Day classes:', dayObj, classes); // Depuración
+    console.log('Day classes:', classes);
     return classes;
 };
 // Watchers
 watch([() => props.year, () => props.month, () => props.activeDates], () => {
     initCalendar();
 });
-// Verificar activeDates
-// watch(() => props.activeDates, (newDates) => {
-//   console.log('MonthCalendar activeDates:', newDates);
-// }, { deep: true });
 // Inicializar
 initCalendar();
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
@@ -148,79 +147,33 @@ const __VLS_withDefaultsArg = (function (t) { return t; })({
     month: () => dayjs().month() + 1,
     year: () => dayjs().year(),
     lang: 'en',
-    activeClass: '',
-    prefixClass: 'calendar--active',
+    activeClass: 'red',
+    prefixClass: 'yc-calendar--active',
 });
 const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['red']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['blue']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_classname']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
-/** @type {__VLS_StyleScopedClasses['your_customized_wrapper_class']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
 // CSS variable injection 
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "c-wrapper" },
-    ...{ style: (__VLS_ctx.cssVars) },
+    ...{ class: "yc-wrapper" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ onMouseup: (__VLS_ctx.mouseUp) },
     ...{ onMouseleave: (__VLS_ctx.mouseUp) },
-    ...{ class: "calendar" },
+    ...{ class: "yc-calendar" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "calendar__title" },
+    ...{ class: "yc-calendar__title" },
 });
 (__VLS_ctx.monthTitle);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "calendar__body" },
+    ...{ class: "yc-calendar__body" },
 });
 for (const [day] of __VLS_getVForSourceType((7))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         key: (`title${day}`),
-        ...{ class: "calendar__day day__weektitle" },
+        ...{ class: "yc-calendar__day yc-day__weektitle" },
         ...{ style: ({ fontSize: __VLS_ctx.weekTitleFontSizeAdjustLang }) },
     });
     (__VLS_ctx.showDayTitle(day));
@@ -228,7 +181,7 @@ for (const [day] of __VLS_getVForSourceType((7))) {
 for (const [dayObj, key] of __VLS_getVForSourceType((__VLS_ctx.showDays))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         key: (`day${key}`),
-        ...{ class: "calendar__day" },
+        ...{ class: "yc-calendar__day" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ onMouseover: (...[$event]) => {
@@ -237,25 +190,24 @@ for (const [dayObj, key] of __VLS_getVForSourceType((__VLS_ctx.showDays))) {
         ...{ onMousedown: (...[$event]) => {
                 __VLS_ctx.mouseDown(dayObj);
             } },
-        ...{ class: "day" },
+        ...{ class: "yc-day" },
         ...{ class: (__VLS_ctx.classList(dayObj)) },
     });
     (dayObj.value);
 }
-/** @type {__VLS_StyleScopedClasses['c-wrapper']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar__title']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar__body']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar__day']} */ ;
-/** @type {__VLS_StyleScopedClasses['day__weektitle']} */ ;
-/** @type {__VLS_StyleScopedClasses['calendar__day']} */ ;
-/** @type {__VLS_StyleScopedClasses['day']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-wrapper']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-calendar']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-calendar__title']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-calendar__body']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-calendar__day']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-day__weektitle']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-calendar__day']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-day']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
             showDays: showDays,
-            cssVars: cssVars,
             weekTitleFontSizeAdjustLang: weekTitleFontSizeAdjustLang,
             monthTitle: monthTitle,
             showDayTitle: showDayTitle,
