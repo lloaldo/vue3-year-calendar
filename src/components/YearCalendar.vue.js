@@ -8,6 +8,7 @@ const props = withDefaults(defineProps(), {
     lang: 'en',
     activeClass: '',
     prefixClass: 'yc-calendar--active',
+    darkmode: false,
 });
 const emit = defineEmits();
 // Estado reactivo
@@ -87,6 +88,7 @@ const __VLS_withDefaultsArg = (function (t) { return t; })({
     lang: 'en',
     activeClass: '',
     prefixClass: 'yc-calendar--active',
+    darkmode: false,
 });
 const __VLS_ctx = {};
 let __VLS_components;
@@ -95,6 +97,7 @@ let __VLS_directives;
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "yc-container" },
+    ...{ class: ({ 'yc-dark': __VLS_ctx.darkmode }) },
 });
 if (__VLS_ctx.showYearSelector) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -161,6 +164,7 @@ for (const [i] of __VLS_getVForSourceType((5))) {
     });
 }
 /** @type {__VLS_StyleScopedClasses['yc-container']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-dark']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-year']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-year-chooser']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-months']} */ ;

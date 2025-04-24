@@ -33,7 +33,6 @@ export default defineConfig({
                     vue: 'Vue',
                     dayjs: 'dayjs',
                 },
-                assetFileNames: 'assets/[name].[ext]',
             },
         },
         sourcemap: false,

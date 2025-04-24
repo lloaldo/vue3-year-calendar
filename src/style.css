@@ -152,23 +152,23 @@
 }
 
 .yc-day.your_customized_wrapper_class.red {
-  background-color: #a00; /* Rojo */
+  background-color: rgb(233, 35, 35); /* Rojo */
   color: white;
 }
 
 .yc-day.your_customized_wrapper_class.blue {
-  background-color: #007daa; /* Azul */
+  background-color: #2e5dc9; /* Azul */
   color: white;
 }
 
 .yc-day.your_customized_wrapper_class.your_customized_classname {
-  background-color: yellow; /* Amarillo */
-  color: black;
+  background-color: rgb(97, 220, 155); /* Verde */
+  color: white;
 }
 
 .yc-day.your_customized_wrapper_class.custom-day {
-  background-color: #ff0; /* Amarillo brillante */
-  color: black;
+  background-color: rgb(0, 255, 21); /* Amarillo brillante */
+  color: white;
 }
 
 .yc-day:not(.your_customized_wrapper_class):hover {
@@ -179,4 +179,47 @@
 .yc-calendar__day--otherMonth {
   color: #eaeaea;
   cursor: auto;
+}
+
+/* Estilos para modo oscuro */
+.yc-dark .yc-container {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.yc-dark .yc-year__button {
+  background-color: #333;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+.yc-dark .yc-year__select {
+  background-color: #333;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+.yc-dark .yc-wrapper {
+  background-color: #2a2a2a;
+  border-color: #444;
+}
+
+.yc-dark .yc-calendar__title {
+  color: #e0e0e0;
+}
+
+.yc-dark .yc-day__weektitle {
+  color: #aaa;
+}
+
+.yc-dark .yc-day {
+  color: #e0e0e0;
+}
+
+.yc-dark .yc-day:hover {
+  background-color: #444;
+}
+
+.yc-dark .yc-calendar__day--otherMonth {
+  color: #666;
 }

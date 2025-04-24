@@ -1,6 +1,6 @@
 <!-- vue3-year-calendar/src/components/YearCalendar.vue -->
 <template>
-  <div class="yc-container">
+  <div class="yc-container" :class="{ 'yc-dark': darkmode }">
     <div v-if="showYearSelector" class="yc-year">
       <span
         v-for="i in 5"
@@ -48,6 +48,7 @@ interface Props {
   lang?: string;
   activeClass?: string;
   prefixClass?: string;
+  darkmode?: boolean; // Nueva propiedad
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -57,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   lang: 'en',
   activeClass: '',
   prefixClass: 'yc-calendar--active',
+  darkmode: false,
 });
 
 // Emits
