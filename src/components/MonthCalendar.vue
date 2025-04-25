@@ -1,6 +1,6 @@
 <!-- vue3-year-calendar/src/components/MonthCalendar.vue -->
 <template>
-  <div class="yc-wrapper">
+  <div class="yc-wrapper" :class="{ 'yc-dark': darkmode }">
     <div
       class="yc-calendar"
       @mouseup="mouseUp"
@@ -59,6 +59,7 @@ interface Props {
   lang?: string;
   activeClass?: string;
   prefixClass?: string;
+  darkmode?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -68,6 +69,7 @@ const props = withDefaults(defineProps<Props>(), {
   lang: 'en',
   activeClass: 'red',
   prefixClass: 'yc-calendar--active',
+  darkmode: false,
 });
 
 // Emits
@@ -170,7 +172,7 @@ const toggleDay = (dayObj: DayObj) => {
     .set('month', Number(props.month) - 1)
     .set('date', Number(dayObj.value))
     .format('YYYY-MM-DD');
-  console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
+  // console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
   emit('toggleDate', {
     date,
     selected: !dayObj.active,
@@ -210,7 +212,7 @@ const classList = (dayObj: DayObj) => {
   if (dayObj.active && dayObj.className) {
     classes[dayObj.className] = true;
   }
-  console.log('Day classes:', classes);
+  // console.log('Day classes:', classes);
   return classes;
 };
 

@@ -22,6 +22,7 @@
         :active-class="activeClass"
         :lang="lang"
         :prefix-class="prefixClass"
+        :darkmode="darkmode"
         @toggle-date="toggleDate"
         @over-day="overDay"
       />

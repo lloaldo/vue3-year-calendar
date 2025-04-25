@@ -3,6 +3,7 @@
   <div id="app">
     <button @click="addSatAndSunOfYear">Add weekend</button>
     <button @click="removeSatAndSunOfYear">Remove weekend</button>
+    <button @click="toggleDarkMode">Alternar Modo Oscuro</button>
     <select v-model="lang">
       <option value="tw">繁體中文</option>
       <option value="en">English</option>
@@ -31,6 +32,7 @@
       prefix-class="your_customized_wrapper_class"
       :active-class="activeClass"
       :show-year-selector="showYearSelector"
+      :darkmode="darkmode"
     />
   </div>
 </template>
@@ -56,6 +58,7 @@ const activeDates = ref<ActiveDate[]>([
 ]);
 const activeClass = ref('');
 const showYearSelector = ref(true);
+const darkmode = ref(false);
 
 // Métodos
 const toggleDate = (dateInfo: { date: string; selected: boolean; className?: string }) => {
@@ -73,6 +76,11 @@ const toggleDate = (dateInfo: { date: string; selected: boolean; className?: str
   }
 
   activeDates.value = newDates;
+};
+
+const toggleDarkMode = () => {
+  darkmode.value = !darkmode.value;
+  console.log('Dark mode:', darkmode.value);
 };
 
 const addSatAndSunOfYear = () => {

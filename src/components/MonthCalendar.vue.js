@@ -7,6 +7,7 @@ const props = withDefaults(defineProps(), {
     lang: 'en',
     activeClass: 'red',
     prefixClass: 'yc-calendar--active',
+    darkmode: false,
 });
 const emit = defineEmits();
 // Estado reactivo
@@ -94,7 +95,7 @@ const toggleDay = (dayObj) => {
         .set('month', Number(props.month) - 1)
         .set('date', Number(dayObj.value))
         .format('YYYY-MM-DD');
-    console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
+    // console.log('MonthCalendar toggleDay:', { date, selected: !dayObj.active, className: props.activeClass || 'red' });
     emit('toggleDate', {
         date,
         selected: !dayObj.active,
@@ -132,7 +133,7 @@ const classList = (dayObj) => {
     if (dayObj.active && dayObj.className) {
         classes[dayObj.className] = true;
     }
-    console.log('Day classes:', classes);
+    // console.log('Day classes:', classes);
     return classes;
 };
 // Watchers
@@ -149,6 +150,7 @@ const __VLS_withDefaultsArg = (function (t) { return t; })({
     lang: 'en',
     activeClass: 'red',
     prefixClass: 'yc-calendar--active',
+    darkmode: false,
 });
 const __VLS_ctx = {};
 let __VLS_components;
@@ -157,6 +159,7 @@ let __VLS_directives;
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "yc-wrapper" },
+    ...{ class: ({ 'yc-dark': __VLS_ctx.darkmode }) },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ onMouseup: (__VLS_ctx.mouseUp) },
@@ -196,6 +199,7 @@ for (const [dayObj, key] of __VLS_getVForSourceType((__VLS_ctx.showDays))) {
     (dayObj.value);
 }
 /** @type {__VLS_StyleScopedClasses['yc-wrapper']} */ ;
+/** @type {__VLS_StyleScopedClasses['yc-dark']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-calendar']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-calendar__title']} */ ;
 /** @type {__VLS_StyleScopedClasses['yc-calendar__body']} */ ;

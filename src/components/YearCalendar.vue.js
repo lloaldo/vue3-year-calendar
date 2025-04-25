@@ -133,6 +133,7 @@ for (const [n] of __VLS_getVForSourceType((12))) {
         activeClass: (__VLS_ctx.activeClass),
         lang: (__VLS_ctx.lang),
         prefixClass: (__VLS_ctx.prefixClass),
+        darkmode: (__VLS_ctx.darkmode),
     }));
     const __VLS_1 = __VLS_0({
         ...{ 'onToggleDate': {} },
@@ -145,6 +146,7 @@ for (const [n] of __VLS_getVForSourceType((12))) {
         activeClass: (__VLS_ctx.activeClass),
         lang: (__VLS_ctx.lang),
         prefixClass: (__VLS_ctx.prefixClass),
+        darkmode: (__VLS_ctx.darkmode),
     }, ...__VLS_functionalComponentArgsRest(__VLS_0));
     let __VLS_3;
     let __VLS_4;

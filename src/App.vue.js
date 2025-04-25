@@ -12,6 +12,7 @@ const activeDates = ref([
 ]);
 const activeClass = ref('');
 const showYearSelector = ref(true);
+const darkmode = ref(false);
 // Métodos
 const toggleDate = (dateInfo) => {
     const newDates = [...activeDates.value];
@@ -27,6 +28,10 @@ const toggleDate = (dateInfo) => {
         newDates.splice(dateIndex, 1);
     }
     activeDates.value = newDates;
+};
+const toggleDarkMode = () => {
+    darkmode.value = !darkmode.value;
+    console.log('Dark mode:', darkmode.value);
 };
 const addSatAndSunOfYear = () => {
     let theDate = dayjs(`${year.value}-01-01`);
@@ -68,6 +73,9 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElement
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
     ...{ onClick: (__VLS_ctx.removeSatAndSunOfYear) },
+});
+__VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
+    ...{ onClick: (__VLS_ctx.toggleDarkMode) },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.select, __VLS_intrinsicElements.select)({
     value: (__VLS_ctx.lang),
@@ -117,6 +125,7 @@ const __VLS_0 = __VLS_asFunctionalComponent(YearCalendar, new YearCalendar({
     prefixClass: "your_customized_wrapper_class",
     activeClass: (__VLS_ctx.activeClass),
     showYearSelector: (__VLS_ctx.showYearSelector),
+    darkmode: (__VLS_ctx.darkmode),
 }));
 const __VLS_1 = __VLS_0({
     ...{ 'onToggleDate': {} },
@@ -126,6 +135,7 @@ const __VLS_1 = __VLS_0({
     prefixClass: "your_customized_wrapper_class",
     activeClass: (__VLS_ctx.activeClass),
     showYearSelector: (__VLS_ctx.showYearSelector),
+    darkmode: (__VLS_ctx.darkmode),
 }, ...__VLS_functionalComponentArgsRest(__VLS_0));
 let __VLS_3;
 let __VLS_4;
@@ -144,7 +154,9 @@ const __VLS_self = (await import('vue')).defineComponent({
             activeDates: activeDates,
             activeClass: activeClass,
             showYearSelector: showYearSelector,
+            darkmode: darkmode,
             toggleDate: toggleDate,
+            toggleDarkMode: toggleDarkMode,
             addSatAndSunOfYear: addSatAndSunOfYear,
             removeSatAndSunOfYear: removeSatAndSunOfYear,
         };

@@ -53,6 +53,12 @@
 .yc-month {
   padding: 8px;
   flex: 16.66%;
+  transition: transform 0.2s ease-in-out; /* Transición para el zoom */
+}
+
+.yc-month:hover {
+  transform: scale(1.10);
+  z-index: 1;
 }
 
 .yc-empty {
@@ -201,7 +207,7 @@
 
 .yc-dark .yc-wrapper {
   background-color: #2a2a2a;
-  border-color: #444;
+  border: none; /* Eliminar cualquier borde que pueda interferir */
 }
 
 .yc-dark .yc-calendar__title {
@@ -216,10 +222,32 @@
   color: #e0e0e0;
 }
 
+.yc-dark .yc-month:hover {
+  transform: scale(1.10);
+  z-index: 1;
+}
+
+.yc-day:hover {
+  background-color: rgba(102, 102, 102, 0.1);
+  border-radius: 5px;
+}
+
 .yc-dark .yc-day:hover {
   background-color: #444;
 }
 
 .yc-dark .yc-calendar__day--otherMonth {
   color: #666;
+}
+
+.yc-dark .yc-calendar {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  box-sizing: border-box; /* Evitar que el borde afecte el tamaño */
+}
+
+.yc-dark .yc-calendar__title {
+  color: #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
