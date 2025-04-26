@@ -3,7 +3,7 @@
 A customizable year calendar component for Vue 3 applications, allowing users to display and interact with a full-year calendar. It supports date selection, multiple languages, dark mode, and custom styling for active dates.
 
 
-![Demo](assets/vue3-year-calendar-gif.gif)
+![Demo](vue3-year-calendar-gif.gif)
 
 ## Features
 
