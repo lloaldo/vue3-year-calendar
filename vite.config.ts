@@ -36,9 +36,11 @@ export default defineConfig({
         },
       },
     },
+    outDir: 'dist',
+    emptyOutDir: true,
     sourcemap: false,
   },
   css: {
-    devSourcemap: false, // Evita .map en desarrollo
+    devSourcemap: false,
   },
 });
