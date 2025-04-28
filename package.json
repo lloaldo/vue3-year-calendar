@@ -1,6 +1,6 @@
 {
   "name": "vue3-year-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "A customizable year calendar component for Vue 3 applications",
   "main": "./dist/vue3-year-calendar.umd.cjs",

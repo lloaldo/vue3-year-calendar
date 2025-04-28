@@ -1,9 +1,9 @@
-<!-- vue3-year-calendar/src/App.vue -->
 <template>
   <div id="app">
+    <h2>Year Selected: {{ year }}</h2>
     <button @click="addSatAndSunOfYear">Add weekend</button>
     <button @click="removeSatAndSunOfYear">Remove weekend</button>
-    <button @click="toggleDarkMode">Alternar Modo Oscuro</button>
+    <button @click="toggleDarkMode">Dark Mode</button>
     <select v-model="lang">
       <option value="tw">繁體中文</option>
       <option value="en">English</option>
@@ -25,7 +25,7 @@
     </label>
 
     <year-calendar
-      v-model="year"
+      :modelValue="year"
       v-model:active-dates="activeDates"
       @toggle-date="toggleDate"
       :lang="lang"
@@ -33,12 +33,13 @@
       :active-class="activeClass"
       :show-year-selector="showYearSelector"
       :darkmode="darkmode"
+      @update:modelValue="year = $event"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import dayjs from 'dayjs';
 import YearCalendar from './components/YearCalendar.vue';
 
@@ -49,16 +50,26 @@ interface ActiveDate {
 
 // Estado reactivo
 const lang = ref('es');
-const year = ref(2025);
+const year = ref(2024); // Cambiado a 2024
 const activeDates = ref<ActiveDate[]>([
-  { date: '2025-02-13' },
-  { date: '2025-02-14', className: 'red' },
-  { date: '2025-02-15', className: 'blue' },
-  { date: '2025-02-16', className: 'your_customized_classname' },
+  { date: '2024-02-13' },
+  { date: '2024-02-14', className: 'red' },
+  { date: '2024-02-15', className: 'blue' },
+  { date: '2024-02-16', className: 'your_customized_classname' },
 ]);
 const activeClass = ref('');
 const showYearSelector = ref(true);
 const darkmode = ref(false);
+
+// Observar cambios en el año para actualizar fechas activas
+watch(year, (newYear) => {
+  activeDates.value = [
+    { date: `${newYear}-02-13` },
+    { date: `${newYear}-02-14`, className: 'red' },
+    { date: `${newYear}-02-15`, className: 'blue' },
+    { date: `${newYear}-02-16`, className: 'your_customized_classname' },
+  ];
+});
 
 // Métodos
 const toggleDate = (dateInfo: { date: string; selected: boolean; className?: string }) => {
@@ -80,7 +91,6 @@ const toggleDate = (dateInfo: { date: string; selected: boolean; className?: str
 
 const toggleDarkMode = () => {
   darkmode.value = !darkmode.value;
-  console.log('Dark mode:', darkmode.value);
 };
 
 const addSatAndSunOfYear = () => {
@@ -118,5 +128,10 @@ const removeSatAndSunOfYear = () => {
 #app {
   padding: 60px;
   background-color: #eaeaea;
+}
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
 }
 </style>

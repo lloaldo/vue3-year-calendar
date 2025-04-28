@@ -221,8 +221,8 @@ watch([() => props.year, () => props.month, () => props.activeDates], () => {
   initCalendar();
 });
 
-// Inicializar
 initCalendar();
+
 </script>
 <style lang="css" scoped>
 /* Los estilos se mueven a dist/vue3-year-calendar.css */

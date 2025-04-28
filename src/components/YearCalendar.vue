@@ -1,4 +1,3 @@
-<!-- vue3-year-calendar/src/components/YearCalendar.vue -->
 <template>
   <div class="yc-container" :class="{ 'yc-dark': darkmode }">
     <div v-if="showYearSelector" class="yc-year">
@@ -32,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import dayjs from 'dayjs';
 import MonthCalendar from './MonthCalendar.vue';
 
@@ -45,17 +44,17 @@ interface ActiveDate {
 interface Props {
   showYearSelector?: boolean;
   activeDates?: (string | ActiveDate)[];
-  value?: string | number;
+  modelValue?: string | number; // Cambiado de 'value' a 'modelValue'
   lang?: string;
   activeClass?: string;
   prefixClass?: string;
-  darkmode?: boolean; // Nueva propiedad
+  darkmode?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showYearSelector: true,
   activeDates: () => [],
-  value: () => dayjs().year(),
+  modelValue: undefined,
   lang: 'en',
   activeClass: '',
   prefixClass: 'yc-calendar--active',
@@ -64,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits
 const emit = defineEmits<{
-  (e: 'input', value: number): void;
+  (e: 'update:modelValue', value: number): void;
   (e: 'update:activeDates', value: (string | ActiveDate)[]): void;
   (e: 'toggleDate', value: { date: string; selected: boolean; className?: string }): void;
   (e: 'overDay', value: { date: string; selected: boolean; className?: string }): void;
@@ -75,8 +74,8 @@ const isUsingString = ref(props.activeDates.length && typeof props.activeDates[0
 
 // Computadas
 const activeYear = computed({
-  get: () => parseInt(String(props.value)),
-  set: (val) => emit('input', val),
+  get: () => parseInt(String(props.modelValue)) || dayjs().year(),
+  set: (val) => emit('update:modelValue', val),
 });
 
 const month = computed(() => {
@@ -87,7 +86,7 @@ const month = computed(() => {
         ? { date, className: props.activeClass }
         : { date: date.date, className: date.className ?? '' };
 
-    if (dayjs(oDate.date).year() !== props.value) return;
+    if (dayjs(oDate.date).year() !== activeYear.value) return; // Usar activeYear.value
     const m = (dayjs(oDate.date).month() + 1).toString();
     if (!monthData[m]) monthData[m] = [];
     monthData[m].push(oDate);
